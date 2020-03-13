@@ -13,11 +13,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
-from main.views import UserViewset
-
+from main.views import UserViewset, login
+from django.contrib.auth.views import redirect_to_login
 
 router = routers.DefaultRouter()
 router.register('users', UserViewset)
@@ -26,4 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
     path('auth/', include('rest_framework_social_oauth2.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('entrar/', login),
+    path('auth/login/google-oauth2/', redirect_to_login, name='logeate'),
 ]
